@@ -6,6 +6,7 @@ let maxNumberOfRounds = 25;
 let currentRound = 0;
 
 let productArr = [];
+let indexArr = [];
 
 // DOM elements
 
@@ -33,13 +34,19 @@ function selectRandomProduct() {
 }
 
 function renderProducts() {
-  let product1 = selectRandomProduct();
-  let product2 = selectRandomProduct();
-  let product3 = selectRandomProduct();
-  while (product1 === product2 || product1 === product3 || product2 === product3) {
-    product2 = selectRandomProduct();
-    product3 = selectRandomProduct();
+  while (indexArr.length < 6) {
+    let ranNum = selectRandomProduct();
+    if (!indexArr.includes(ranNum)) {
+      indexArr.push(ranNum);
+    }
   }
+  let product1 = indexArr.shift();
+  let product2 = indexArr.shift();
+  let product3 = indexArr.shift();
+  // while (product1 === product2 || product1 === product3 || product2 === product3) {
+  //   product2 = selectRandomProduct();
+  //   product3 = selectRandomProduct();
+  // }
   image1.src = productArr[product1].src;
   image2.src = productArr[product2].src;
   image3.src = productArr[product3].src;
@@ -71,6 +78,11 @@ function handleProductClick(event) {
 }
 
 function renderResults() {
+  renderList();
+  renderChart();
+}
+
+function renderList() {
   console.log('results');
   for (let i = 0; i < productArr.length; i++) {
     let resultListItem = document.createElement('li');
@@ -79,6 +91,63 @@ function renderResults() {
   }
 }
 
+function renderChart() {
+  let productLabelsNames = [];
+  let productVotes = [];
+  let productViews = [];
+
+  for (let i = 0; i < productArr.length; i++) {
+    productLabelsNames.push(productArr[i].name);
+    productVotes.push(productArr[i].votes);
+    productViews.push(productArr[i].views);
+  }
+
+
+  const ctx = document.getElementById('myChart');
+  const config = {
+    type: 'bar',
+    data: {
+      labels: productLabelsNames,
+      datasets: [
+        {
+          label: 'Number of Views',
+          data: productViews,
+          borderWidth: 2,
+          backgroundColor: '#FEDA2A',
+          borderColor: '#0B52FF',
+          barThickness: 'flex',
+          hoverBackgroundColor: '#0B52FF',
+        },
+        {
+          label: 'Number of Votes',
+          data: productVotes,
+          borderWidth: 2,
+          backgroundColor: '#FFA000',
+          borderColor: '#0B52FF',
+          barThickness: 'flex',
+          hoverBackgroundColor: '#0B52FF',
+        }
+      ]
+    },
+    options: {
+      scales: {
+        y: {
+          ticks: {
+            color: 'black',
+            beginAtZero: true
+          }
+        },
+        x: {
+          ticks: {
+            color: 'black',
+            beginAtZero: true
+          }
+        }
+      }
+    }
+  };
+  new Chart(ctx,config);
+}
 
 // executable code
 
@@ -109,3 +178,5 @@ renderProducts();
 // event listeners
 
 imageSection.addEventListener('click', handleProductClick);
+
+// Chart.js code
