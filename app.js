@@ -21,7 +21,7 @@ let resultsList = document.querySelector('#results-list');
 
 function Product(name, fileExtension = 'jpg') {
   this.name = name;
-  this.src = `../img/${name}.${fileExtension}`;
+  this.src = `img/${name}.${fileExtension}`;
   this.views = 0;
   this.votes = 0;
 }
