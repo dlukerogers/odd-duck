@@ -112,7 +112,6 @@ function renderChart() {
     productViews.push(productArr[i].views);
   }
 
-
   const ctx = document.getElementById('myChart');
   const config = {
     type: 'bar',
