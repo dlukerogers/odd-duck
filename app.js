@@ -8,6 +8,11 @@ let currentRound = 0;
 let productArr = [];
 let indexArr = [];
 
+let settings = {
+  // chartAndList: false,
+  productArr: [],
+};
+
 // DOM elements
 
 let imageSection = document.querySelector('#image-section');
@@ -59,7 +64,7 @@ function renderProducts() {
 }
 
 function handleProductClick(event) {
-  console.log(event);
+  // console.log(event);
   currentRound++;
   let clickedProduct = event.target.alt;
   for (let i = 0; i < productArr.length; i++) {
@@ -72,6 +77,7 @@ function handleProductClick(event) {
     imageSection.removeEventListener('click', handleProductClick);
     button.className = 'clicks-allowed';
     button.addEventListener('click', renderResults);
+    saveSettings();
   } else {
     renderProducts();
   }
@@ -80,16 +86,20 @@ function handleProductClick(event) {
 function renderResults() {
   renderList();
   renderChart();
+  // settings.chartAndList = true;
+  settings.productArr = productArr;
 }
 
 function renderList() {
-  console.log('results');
+  // console.log('results');
   for (let i = 0; i < productArr.length; i++) {
     let resultListItem = document.createElement('li');
     resultListItem.textContent=`${productArr[i].name} had ${productArr[i].votes} votes, and was seen ${productArr[i].views} times`;
     resultsList.appendChild(resultListItem);
   }
 }
+
+// Chart.js code
 
 function renderChart() {
   let productLabelsNames = [];
@@ -149,34 +159,58 @@ function renderChart() {
   new Chart(ctx,config);
 }
 
+function saveSettings() {
+  console.log(settings);
+  let stringSettings = JSON.stringify(settings);
+  console.log(stringSettings);
+  localStorage.setItem('settings', stringSettings);
+}
+
+function loadPageSettings() {
+  let savedSettings = localStorage.getItem('settings');
+  console.log(savedSettings);
+  if (savedSettings) {
+    console.log('true');
+    let parsedSettings = JSON.parse(savedSettings);
+    console.log(parsedSettings);
+    settings.productArr = parsedSettings.productArr;
+    console.log(productArr);
+    productArr = settings.productArr;
+    console.log('settings after localStorage ', settings.productArr);
+    // if (settings.productArr) {
+    //   // renderProducts();
+    // }
+  } else {
+    let bag = new Product('bag');
+    let banana = new Product('banana');
+    let bathroom = new Product('bathroom');
+    let boots = new Product('boots');
+    let breakfast = new Product('breakfast');
+    let bubblegum = new Product('bubblegum');
+    let chair = new Product ('chair');
+    let cthulhu = new Product('cthulhu');
+    let dogDuck = new Product('dog-duck');
+    let dragon = new Product('dragon');
+    let pen = new Product('pen');
+    let petSweep = new Product('pet-sweep');
+    let scissors = new Product('scissors');
+    let shark = new Product('shark');
+    let sweep = new Product('sweep', 'png');
+    let tauntaun = new Product('tauntaun');
+    let unicorn = new Product('unicorn');
+    let waterCan = new Product('water-can');
+    let wineGlass = new Product('wine-glass');
+    productArr.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, waterCan, wineGlass);
+  }
+}
+
 // executable code
 
-let bag = new Product('bag');
-let banana = new Product('banana');
-let bathroom = new Product('bathroom');
-let boots = new Product('boots');
-let breakfast = new Product('breakfast');
-let bubblegum = new Product('bubblegum');
-let chair = new Product ('chair');
-let cthulhu = new Product('cthulhu');
-let dogDuck = new Product('dog-duck');
-let dragon = new Product('dragon');
-let pen = new Product('pen');
-let petSweep = new Product('pet-sweep');
-let scissors = new Product('scissors');
-let shark = new Product('shark');
-let sweep = new Product('sweep', 'png');
-let tauntaun = new Product('tauntaun');
-let unicorn = new Product('unicorn');
-let waterCan = new Product('water-can');
-let wineGlass = new Product('wine-glass');
-
-productArr.push(bag, banana, bathroom, boots, breakfast, bubblegum, chair, cthulhu, dogDuck, dragon, pen, petSweep, scissors, shark, sweep, tauntaun, unicorn, waterCan, wineGlass);
+loadPageSettings();
 
 renderProducts();
+
 
 // event listeners
 
 imageSection.addEventListener('click', handleProductClick);
-
-// Chart.js code

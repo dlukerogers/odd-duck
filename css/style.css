@@ -41,6 +41,7 @@ main {
   overflow: auto;
   background-color: #0B52FF;
   border: 2px solid white;
+  border-radius: 4px;
 }
 
 h2 {
