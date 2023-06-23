@@ -88,6 +88,7 @@ function renderResults() {
   renderChart();
   // settings.chartAndList = true;
   settings.productArr = productArr;
+  button.removeEventListener('click', renderResults);
 }
 
 function renderList() {
