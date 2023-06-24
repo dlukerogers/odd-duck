@@ -9,7 +9,6 @@ let productArr = [];
 let indexArr = [];
 
 let settings = {
-  // chartAndList: false,
   productArr: [],
 };
 
@@ -48,10 +47,6 @@ function renderProducts() {
   let product1 = indexArr.shift();
   let product2 = indexArr.shift();
   let product3 = indexArr.shift();
-  // while (product1 === product2 || product1 === product3 || product2 === product3) {
-  //   product2 = selectRandomProduct();
-  //   product3 = selectRandomProduct();
-  // }
   image1.src = productArr[product1].src;
   image2.src = productArr[product2].src;
   image3.src = productArr[product3].src;
@@ -64,7 +59,6 @@ function renderProducts() {
 }
 
 function handleProductClick(event) {
-  // console.log(event);
   currentRound++;
   let clickedProduct = event.target.alt;
   for (let i = 0; i < productArr.length; i++) {
@@ -86,13 +80,11 @@ function handleProductClick(event) {
 function renderResults() {
   renderList();
   renderChart();
-  // settings.chartAndList = true;
   settings.productArr = productArr;
   button.removeEventListener('click', renderResults);
 }
 
 function renderList() {
-  // console.log('results');
   for (let i = 0; i < productArr.length; i++) {
     let resultListItem = document.createElement('li');
     resultListItem.textContent=`${productArr[i].name} had ${productArr[i].votes} votes, and was seen ${productArr[i].views} times`;
@@ -160,26 +152,16 @@ function renderChart() {
 }
 
 function saveSettings() {
-  console.log(settings);
   let stringSettings = JSON.stringify(settings);
-  console.log(stringSettings);
   localStorage.setItem('settings', stringSettings);
 }
 
 function loadPageSettings() {
   let savedSettings = localStorage.getItem('settings');
-  console.log(savedSettings);
   if (savedSettings) {
-    console.log('true');
     let parsedSettings = JSON.parse(savedSettings);
-    console.log(parsedSettings);
     settings.productArr = parsedSettings.productArr;
-    console.log(productArr);
     productArr = settings.productArr;
-    console.log('settings after localStorage ', settings.productArr);
-    // if (settings.productArr) {
-    //   // renderProducts();
-    // }
   } else {
     let bag = new Product('bag');
     let banana = new Product('banana');
