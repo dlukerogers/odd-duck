@@ -8,10 +8,6 @@ let currentRound = 0;
 let productArr = [];
 let indexArr = [];
 
-let settings = {
-  productArr: [],
-};
-
 // DOM elements
 
 let imageSection = document.querySelector('#image-section');
@@ -80,7 +76,6 @@ function handleProductClick(event) {
 function renderResults() {
   renderList();
   renderChart();
-  settings.productArr = productArr;
   button.removeEventListener('click', renderResults);
 }
 
@@ -152,16 +147,15 @@ function renderChart() {
 }
 
 function saveSettings() {
-  let stringSettings = JSON.stringify(settings);
-  localStorage.setItem('settings', stringSettings);
+  let stringSettings = JSON.stringify(productArr);
+  localStorage.setItem('productArr', stringSettings);
 }
 
 function loadPageSettings() {
-  let savedSettings = localStorage.getItem('settings');
+  let savedSettings = localStorage.getItem('productArr');
   if (savedSettings) {
     let parsedSettings = JSON.parse(savedSettings);
-    settings.productArr = parsedSettings.productArr;
-    productArr = settings.productArr;
+    productArr = parsedSettings;
   } else {
     let bag = new Product('bag');
     let banana = new Product('banana');
